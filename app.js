@@ -21,8 +21,9 @@ if (fechaEl) fechaEl.textContent = fmt.format(CONFIG.fecha);
 
 const mapaEl = document.getElementById("mapa");
 if (CONFIG.direccion && mapaEl) {
-  mapaEl.href = "https://www.google.com/maps/search/?api=1&query=" +
-                encodeURIComponent(CONFIG.direccion);
+  mapaEl.href = CONFIG.direccion.startsWith("http")
+    ? CONFIG.direccion
+    : "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(CONFIG.direccion);
 } else if (mapaEl) {
   mapaEl.style.display = "none";
 }
