@@ -109,7 +109,12 @@ addEventListener("pointermove", e=>{
   const g = document.getElementById("glow");
   g.style.setProperty("--x", e.clientX+"px"); g.style.setProperty("--y", e.clientY+"px");
 });
-document.getElementById("rsvp").addEventListener("click", e=>{ e.target.textContent = "¡Te esperamos! ✦"; });
+document.getElementById("rsvp").addEventListener("click", e => {
+  e.target.textContent = "¡Te esperamos! ✦";
+  audio.play().catch(() => {});
+  btnM.textContent = "❚❚ Pausar";
+  btnM.classList.add("on");
+});
   const audio = document.getElementById("audio");
 const btnM = document.getElementById("musica");
 btnM.addEventListener("click", () => {
