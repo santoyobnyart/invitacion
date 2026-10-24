@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Estás invitado</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#09090d; --fg:#f2f0ea; --muted:#8b8a93; --line:rgba(255,255,255,.12);
+  --a:#7c5cff; --b:#ff4d8d; --c:#2ec4b6;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+  color-scheme:dark;
+}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--fg);font-family:"Space Grotesk",system-ui,sans-serif;overflow-x:hidden}
+.orb{position:fixed;border-radius:50%;filter:blur(90px);opacity:.45;pointer-events:none;will-change:transform}
+.o1{width:46vmax;height:46vmax;background:var(--a);top:-15vmax;left:-12vmax;animation:d1 22s ease-in-out infinite alternate}
+.o2{width:38vmax;height:38vmax;background:var(--b);bottom:-14vmax;right:-10vmax;animation:d2 26s ease-in-out infinite alternate}
+.o3{width:26vmax;height:26vmax;background:var(--c);top:40%;left:55%;opacity:.28;animation:d3 30s ease-in-out infinite alternate}
+@keyframes d1{to{transform:translate(18vmax,12vmax) scale(1.2)}}
+@keyframes d2{to{transform:translate(-16vmax,-10vmax) scale(1.15)}}
+@keyframes d3{to{transform:translate(-30vmax,8vmax) scale(.8)}}
+#glow{position:fixed;inset:0;pointer-events:none;background:radial-gradient(500px circle at var(--x,50%) var(--y,50%),rgba(255,255,255,.07),transparent 60%)}
+main{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:48px 24px;gap:40px}
+.kicker{font-size:.8rem;letter-spacing:.4em;text-transform:uppercase;color:var(--muted)}
+h1{margin:12px 0 0;font-weight:700;font-size:clamp(2.8rem,10vw,7rem);line-height:.95;letter-spacing:-.04em;
+  background:linear-gradient(100deg,var(--fg) 20%,var(--b) 50%,var(--a) 80%);background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 8s linear infinite}
+@keyframes shine{to{background-position:200% center}}
+.info{display:flex;gap:12px 32px;flex-wrap:wrap;justify-content:center;color:var(--muted);font-weight:300;font-size:1.05rem}
+.info b{color:var(--fg);font-weight:500}
+.count{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;width:min(560px,100%)}
+.cell{border:1px solid var(--line);border-radius:18px;padding:18px 6px;background:rgba(255,255,255,.03);backdrop-filter:blur(8px)}
+.num{font-size:clamp(1.9rem,8vw,3.4rem);font-weight:300;font-variant-numeric:tabular-nums;display:block}
+.num.tick{animation:tick .4s ease}
+@keyframes tick{from{transform:translateY(-8px);opacity:.2}to{transform:none;opacity:1}}
+.lbl{font-size:.7rem;letter-spacing:.25em;text-transform:uppercase;color:var(--muted)}
+button{font:inherit;color:var(--bg);background:var(--fg);border:0;border-radius:999px;padding:14px 34px;font-weight:500;cursor:pointer;transition:transform .2s,box-shadow .2s}
+button:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(124,92,255,.45)}
+.map{color:var(--fg);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:6px 16px;font-size:.9rem;transition:background .2s,border-color .2s}
+.map:hover{background:rgba(255,255,255,.08);border-color:var(--fg)}
+.rise{opacity:0;transform:translateY(20px);animation:rise .9s cubic-bezier(.2,.7,.2,1) forwards}
+@keyframes rise{to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rise{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div><div id="glow"></div>
+<main>
+  <header class="rise">
+    <div class="kicker">30 AÑOS</div>
+    <h1 id="title"><br>SANTOYO FEST</h1>
+  </header>
+  <div class="info rise" style="animation-delay:.2s">
+    <span><b id="fecha"></b></span>
+    <span><b id="lugar"></b></span>
+    <a class="map" id="mapa" target="_blank" rel="noopener">Ver ubicación ↗</a>
+  </div>
+  <section class="count rise" style="animation-delay:.4s" aria-live="off">
+    <div class="cell"><span class="num" id="d">00</span><span class="lbl">Días</span></div>
+    <div class="cell"><span class="num" id="h">00</span><span class="lbl">Horas</span></div>
+    <div class="cell"><span class="num" id="m">00</span><span class="lbl">Min</span></div>
+    <div class="cell"><span class="num" id="s">00</span><span class="lbl">Seg</span></div>
+  </section>
+  <button class="rise" style="animation-delay:.6s" id="rsvp">Confirmar asistencia</button>
+</main>
+<script>
+// ✏️ Edita aquí tus datos
+const CONFIG = {
+  fecha: new Date(2026, 10, 7, 14, 0, 0), // año, mes (0-11), día, hora, min
+  lugar: "Trae tu pisto",
+  direccion: "Av. Patria Ote. 1440, Zalatitán, 45405 Tonalá, Jal." // dirección o nombre del lugar tal como aparece en Google Maps
+};
+const fmt = new Intl.DateTimeFormat("es-MX",{weekday:"long",day:"numeric",month:"long",hour:"2-digit",minute:"2-digit"});
+document.getElementById("fecha").textContent = fmt.format(CONFIG.fecha);
+document.getElementById("lugar").textContent = CONFIG.lugar;
+const mapa = document.getElementById("mapa");
+if (CONFIG.direccion) mapa.href = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(CONFIG.direccion);
+else mapa.style.display = "none";
+
+const ids = ["d","h","m","s"].map(i=>document.getElementById(i));
+const prev = [];
+function update(){
+  let t = Math.max(0, CONFIG.fecha - new Date());
+  if(t === 0){
+    document.querySelector(".count").innerHTML = '<div class="cell" style="grid-column:1/-1"><span class="num" style="font-size:2rem">¡La fiesta ya comenzó!</span></div>';
+    clearInterval(timer); return;
+  }
+  const v = [Math.floor(t/864e5), Math.floor(t/36e5)%24, Math.floor(t/6e4)%60, Math.floor(t/1e3)%60];
+  v.forEach((n,i)=>{
+    if(prev[i] !== n){
+      ids[i].textContent = String(n).padStart(2,"0");
+      ids[i].classList.remove("tick"); void ids[i].offsetWidth; ids[i].classList.add("tick");
+      prev[i] = n;
+    }
+  });
+}
+const timer = setInterval(update, 1000); update();
+
+addEventListener("pointermove", e=>{
+  const g = document.getElementById("glow");
+  g.style.setProperty("--x", e.clientX+"px"); g.style.setProperty("--y", e.clientY+"px");
+});
+document.getElementById("rsvp").addEventListener("click", e=>{ e.target.textContent = "¡Te esperamos! ✦"; });
+</script>
+</body>
+</html>
