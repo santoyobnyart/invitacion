@@ -1,0 +1,455 @@
+/* ============================================================
+   SANTOYO FEST · style.css
+   ============================================================ */
+
+:root {
+  --bg:     #09090d;
+  --fg:     #f2f0ea;
+  --muted:  #8b8a93;
+  --line:   rgba(255,255,255,.12);
+  --a:      #7c5cff;   /* purple */
+  --b:      #c754b8;   /* magenta */
+  --c:      #2ec4b6;   /* teal accent */
+  color-scheme: dark;
+}
+
+/* ---- Reset & base ---- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  height: 100%;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  scroll-padding-top: env(safe-area-inset-top, 0px);
+}
+
+body {
+  min-height: 100%;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+/* ============================================================
+   BACKGROUND ORBS
+   ============================================================ */
+.orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: .45;
+  pointer-events: none;
+  will-change: transform;
+}
+.o1 { width:46vmax; height:46vmax; background:var(--a); top:-15vmax; left:-12vmax; animation: d1 22s ease-in-out infinite alternate; }
+.o2 { width:38vmax; height:38vmax; background:#7a2748;  bottom:-14vmax; right:-10vmax; animation: d2 26s ease-in-out infinite alternate; }
+.o3 { width:26vmax; height:26vmax; background:var(--c); top:40%; left:55%; opacity:.22; animation: d3 30s ease-in-out infinite alternate; }
+
+@keyframes d1 { to { transform: translate(18vmax, 12vmax) scale(1.2); } }
+@keyframes d2 { to { transform: translate(-16vmax, -10vmax) scale(1.15); } }
+@keyframes d3 { to { transform: translate(-30vmax, 8vmax) scale(.8); } }
+
+#glow {
+  position: fixed; inset: 0; pointer-events: none;
+  background: radial-gradient(500px circle at var(--x,50%) var(--y,50%), rgba(255,255,255,.07), transparent 60%);
+}
+
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+main {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 48px 24px 64px;
+  gap: 28px;
+}
+
+/* ============================================================
+   HERO (foto + stickers)
+   ============================================================ */
+.hero {
+  position: relative;
+  width: min(420px, 92vw);
+  aspect-ratio: 1 / 1.05;
+  /* Permite que los stickers salgan del borde visual */
+  overflow: visible;
+}
+
+/* Foto principal */
+.hero-photo {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  pointer-events: none;
+}
+.hero-photo img {
+  width: 62%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 20px 40px rgba(0,0,0,.7));
+}
+.photo-ph {
+  width: 62%;
+  aspect-ratio: 3/4;
+  border: 1px dashed var(--line);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: 500 11px 'JetBrains Mono', monospace;
+  letter-spacing: .1em;
+  color: var(--muted);
+  background: rgba(255,255,255,.02);
+}
+
+/* ============================================================
+   STICKERS (arrastrables)
+   ============================================================ */
+.sticker {
+  position: absolute;
+  z-index: 3;
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+  transition: filter .2s, transform .15s;
+  /* La posición inicial se aplica desde JS con data-x / data-y */
+}
+.sticker:hover { filter: brightness(1.15); transform: scale(1.07) rotate(-2deg); }
+.sticker.dragging {
+  cursor: grabbing;
+  z-index: 99;
+  transition: filter .2s;
+  filter: drop-shadow(0 12px 24px rgba(0,0,0,.55));
+  transform: scale(1.1);
+}
+
+.sticker img {
+  width: 100%;
+  height: auto;
+  display: block;
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
+
+/* Placeholder emoji cuando la imagen no carga */
+.sticker-ph {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  background: rgba(255,255,255,.05);
+  border: 1px dashed var(--line);
+  border-radius: 12px;
+  pointer-events: none;
+}
+
+/* Tamaño y posición de cada sticker (en %, relativo al .hero) */
+/* Estos values se completan desde JS con data-x / data-y */
+/* El width se define aquí */
+#s-balloon  { width: 60%; }
+#s-ball     { width: 20%; }
+#s-bottle1  { width: 17%; }
+#s-bottle2  { width: 17%; }
+#s-surf     { width: 22%; }
+#s-glass    { width: 19%; }
+#s-cat      { width: 21%; }
+#s-pool     { width: 14%; }
+
+/* Animación idle suave (se pausa al arrastrar) */
+.sticker:not(.dragging) { animation: idle-float 5s ease-in-out infinite alternate; }
+#s-balloon:not(.dragging)  { animation-duration: 6s; animation-delay: 0s; }
+#s-ball:not(.dragging)     { animation-duration: 5s; animation-delay: -.8s; }
+#s-bottle1:not(.dragging)  { animation-duration: 7s; animation-delay: -1.2s; }
+#s-bottle2:not(.dragging)  { animation-duration: 6.5s; animation-delay: -2s; }
+#s-surf:not(.dragging)     { animation-duration: 5.5s; animation-delay: -3s; }
+#s-glass:not(.dragging)    { animation-duration: 6s; animation-delay: -4s; }
+#s-cat:not(.dragging)      { animation-duration: 5s; animation-delay: -1.5s; }
+#s-pool:not(.dragging)     { animation-duration: 7s; animation-delay: -2.5s; }
+
+@keyframes idle-float {
+  from { translate: 0 0px; }
+  to   { translate: 0 -10px; }
+}
+
+/* ============================================================
+   TÍTULO
+   ============================================================ */
+.kicker {
+  font-size: .75rem;
+  letter-spacing: .45em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-family: 'JetBrains Mono', monospace;
+  margin-bottom: 8px;
+}
+
+h1 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: clamp(2.8rem, 10vw, 6.5rem);
+  line-height: .92;
+  letter-spacing: -.03em;
+  background: linear-gradient(110deg, var(--fg) 20%, var(--b) 52%, var(--a) 82%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shine 8s linear infinite;
+}
+
+@keyframes shine { to { background-position: 200% center; } }
+
+/* ============================================================
+   INFO (fecha · lugar · mapa)
+   ============================================================ */
+.info {
+  display: flex;
+  gap: 8px 24px;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  color: var(--muted);
+  font-weight: 300;
+  font-size: 1rem;
+}
+.info b { color: var(--fg); font-weight: 500; }
+
+.tag-pisto {
+  font: 500 .75rem 'JetBrains Mono', monospace;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 5px 12px;
+}
+
+.map-link {
+  color: var(--fg);
+  text-decoration: none;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 6px 16px;
+  font-size: .9rem;
+  transition: background .2s, border-color .2s;
+}
+.map-link:hover { background: rgba(255,255,255,.08); border-color: var(--fg); }
+
+/* ============================================================
+   COUNTDOWN
+   ============================================================ */
+.count {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  width: min(520px, 100%);
+}
+
+.cell {
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 18px 6px 14px;
+  background: rgba(255,255,255,.03);
+  backdrop-filter: blur(8px);
+}
+
+.num {
+  font-size: clamp(1.8rem, 7vw, 3.2rem);
+  font-weight: 300;
+  font-variant-numeric: tabular-nums;
+  display: block;
+}
+.num.tick { animation: tick .4s ease; }
+@keyframes tick {
+  from { transform: translateY(-8px); opacity: .2; }
+  to   { transform: none; opacity: 1; }
+}
+
+.lbl {
+  display: block;
+  margin-top: 8px;
+  font-size: .68rem;
+  letter-spacing: .25em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ============================================================
+   CTA
+   ============================================================ */
+.cta {
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--bg);
+  background: var(--fg);
+  border: 0;
+  border-radius: 999px;
+  padding: 16px 36px;
+  cursor: pointer;
+  transition: transform .2s, box-shadow .2s;
+  letter-spacing: .01em;
+}
+.cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(124,92,255,.45);
+}
+
+.hint {
+  font: 500 .75rem 'JetBrains Mono', monospace;
+  letter-spacing: .12em;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-top: -14px;
+}
+
+/* ============================================================
+   RSVP FORMULARIO
+   ============================================================ */
+.rsvp {
+  display: none;
+  width: min(420px, 100%);
+  background: rgba(12, 12, 18, 0.7);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  padding: 28px 24px;
+  backdrop-filter: blur(14px);
+  text-align: left;
+}
+.rsvp.open { display: block; animation: rise .45s cubic-bezier(.2,.7,.2,1) forwards; }
+
+.rsvp h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.5rem;
+  margin-bottom: 4px;
+}
+.rsvp .sub { font-size: .9rem; color: var(--muted); margin-bottom: 22px; }
+
+.field { margin-bottom: 18px; }
+.field label {
+  display: block;
+  font: 500 .7rem 'JetBrains Mono', monospace;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.field input,
+.field select {
+  width: 100%;
+  background: rgba(255,255,255,.05);
+  border: 1px solid var(--line);
+  color: var(--fg);
+  font: 500 1rem 'Space Grotesk', sans-serif;
+  padding: 14px 16px;
+  border-radius: 14px;
+  outline: none;
+  transition: border-color .2s;
+  appearance: none;
+}
+.field select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238b8a93' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  padding-right: 40px;
+}
+.field select option { background: #13131a; }
+.field input:focus,
+.field select:focus { border-color: var(--b); }
+
+.submit {
+  width: 100%;
+  margin-top: 4px;
+  background: var(--fg);
+  color: var(--bg);
+  font: 700 1rem 'Space Grotesk', sans-serif;
+  border: 0;
+  border-radius: 14px;
+  padding: 15px;
+  cursor: pointer;
+  transition: opacity .2s, transform .15s;
+}
+.submit:disabled { opacity: .5; cursor: wait; }
+.submit:not(:disabled):hover { transform: translateY(-1px); }
+
+/* Pantalla de éxito */
+.success { display: none; text-align: center; padding: 8px 0; }
+.success.show { display: block; animation: rise .45s cubic-bezier(.2,.7,.2,1); }
+.success .big { font-family: 'Syne', sans-serif; font-size: 2rem; margin-bottom: 8px; }
+.success p    { color: var(--muted); }
+
+/* ============================================================
+   BOTÓN MÚSICA
+   ============================================================ */
+.music-btn {
+  position: fixed;
+  top: calc(16px + env(safe-area-inset-top, 0px));
+  right: 16px;
+  z-index: 10;
+  font: inherit;
+  font-size: .85rem;
+  font-weight: 500;
+  color: var(--fg);
+  background: rgba(255,255,255,.08);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 8px 16px;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: border-color .2s;
+}
+.music-btn.on { border-color: var(--b); color: var(--b); }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer {
+  font: 500 .7rem 'JetBrains Mono', monospace;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: #45464f;
+  margin-top: 16px;
+}
+
+/* ============================================================
+   ANIMACIÓN ENTRADA
+   ============================================================ */
+.rise {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: rise .9s cubic-bezier(.2,.7,.2,1) forwards;
+}
+@keyframes rise {
+  to { opacity: 1; transform: none; }
+}
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, .orb, .sticker, .num { animation: none !important; transition: none !important; }
+  .rise { opacity: 1; transform: none; }
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 480px) {
+  main { padding: 40px 16px 56px; gap: 22px; }
+  .info { gap: 8px 16px; font-size: .95rem; }
+  .cta { padding: 14px 28px; }
+  .rsvp { padding: 22px 18px; }
+}

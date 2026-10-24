@@ -1,0 +1,162 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>SantoyoFest · 30 años</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Fondos animados -->
+  <div class="orb o1" aria-hidden="true"></div>
+  <div class="orb o2" aria-hidden="true"></div>
+  <div class="orb o3" aria-hidden="true"></div>
+  <div id="glow" aria-hidden="true"></div>
+
+  <!-- Botón música fijo -->
+  <button id="btnMusica" class="music-btn" aria-label="Reproducir música">♪ Música</button>
+  <audio id="audio" src="charles.mp3" loop></audio>
+
+  <main>
+
+    <!-- HERO: Foto + stickers alrededor -->
+    <section class="hero rise" style="animation-delay:.1s" aria-label="Hero">
+
+      <!-- Stickers: muévelos libremente. Reemplaza cada src con tu PNG sin fondo. -->
+      <!-- Cada sticker tiene data-x y data-y como posición inicial (% relativo al hero) -->
+
+      <div class="sticker" id="s-balloon"
+           data-x="12" data-y="4"
+           title="Arrastra este sticker">
+        <img src="sticker-30.png" alt="Globo 30 años"
+             onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'sticker-ph',textContent:'🎈 30'}))">
+      </div>
+
+      <div class="sticker" id="s-ball"
+           data-x="5" data-y="60"
+           title="Arrastra este sticker">
+        <img src="sticker-balon.png" alt="Balón"
+             onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'sticker-ph',textContent:'⚽'}))">
+      </div>
+
+      <div class="sticker" id="s-bottle1"
+           data-x="-4" data-y="50"
+           title="Arrastra este sticker">
+        <img src="sticker-botella1.png" alt="Botella 1"
+             onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'sticker-ph',textContent:'🍺'}))">
+      </div>
+
+      <div class="sticker" id="s-bottle2"
+           data-x="76" data-y="50"
+           title="Arrastra este sticker">
+        <img src="sticker-botella2.png" alt="Botella 2"
+             onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'sticker-ph',textContent:'🍺'}))">
+      </div>
+
+      <div class="sticker" id="s-surf"
+           data-x="72" data-y="36"
+           title="Arrastra este sticker">
+        <img src="sticker-tabla.png" alt="Tabla de surf"
+             onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'sticker-ph',textContent:'🏄'}))">
+      </div>
+
+      <div class="sticker" id="s-glass"
+           data-x="70" data-y="70"
+           title="Arrastra este sticker">
+        <img src="sticker-vaso.png" alt="Vaso de whisky"
+             onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'sticker-ph',textContent:'🥃'}))">
+      </div>
+
+      <div class="sticker" id="s-cat"
+           data-x="-2" data-y="70"
+           title="Arrastra este sticker">
+        <img src="sticker-gato.png" alt="Gatito"
+             onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'sticker-ph',textContent:'🐱'}))">
+      </div>
+
+      <div class="sticker" id="s-pool"
+           data-x="8" data-y="78"
+           title="Arrastra este sticker">
+        <img src="sticker-pool.png" alt="Bola de billar 8"
+             onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'sticker-ph',textContent:'🎱'}))">
+      </div>
+
+      <!-- Foto principal: reemplaza src con tu PNG sin fondo -->
+      <div class="hero-photo">
+        <img src="foto.png" alt="Santoyo"
+             onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'photo-ph',textContent:'FOTO.PNG'}))">
+      </div>
+
+    </section>
+
+    <!-- Título -->
+    <header class="rise" style="animation-delay:.3s">
+      <div class="kicker">30 AÑOS</div>
+      <h1>SANTOYO FEST</h1>
+    </header>
+
+    <!-- Fecha, lugar, mapa -->
+    <div class="info rise" style="animation-delay:.45s">
+      <span><b id="fecha"></b></span>
+      <span class="tag-pisto">Trae tu pisto</span>
+      <a class="map-link" id="mapa" target="_blank" rel="noopener">Ver ubicación ↗</a>
+    </div>
+
+    <!-- Countdown -->
+    <section class="count rise" style="animation-delay:.6s" aria-live="off" aria-label="Cuenta regresiva">
+      <div class="cell"><span class="num" id="cd-d">00</span><span class="lbl">Días</span></div>
+      <div class="cell"><span class="num" id="cd-h">00</span><span class="lbl">Horas</span></div>
+      <div class="cell"><span class="num" id="cd-m">00</span><span class="lbl">Min</span></div>
+      <div class="cell"><span class="num" id="cd-s">00</span><span class="lbl">Seg</span></div>
+    </section>
+
+    <!-- CTA -->
+    <button id="btnRsvp" class="cta rise" style="animation-delay:.75s">
+      Confirmar asistencia ✦
+    </button>
+    <p class="hint rise" style="animation-delay:.85s">Confirma antes del 31 de octubre</p>
+
+    <!-- Formulario RSVP -->
+    <section class="rsvp" id="rsvp" aria-hidden="true">
+      <div id="formView">
+        <h2>¿Vas a llegar?</h2>
+        <p class="sub">Déjanos tu nombre y cuántos llegan contigo.</p>
+        <form id="form" novalidate>
+          <div class="field">
+            <label for="nombre">Tu nombre</label>
+            <input id="nombre" name="nombre" type="text"
+                   placeholder="Ej. Rodrigo García"
+                   autocomplete="name" required maxlength="60">
+          </div>
+          <div class="field">
+            <label for="acompanantes">Acompañantes</label>
+            <select id="acompanantes" name="acompanantes">
+              <option value="1">1 persona (solo yo)</option>
+              <option value="2">2 personas</option>
+              <option value="3">3 personas</option>
+            </select>
+          </div>
+          <button type="submit" class="submit" id="submitBtn">Confirmar ✦</button>
+        </form>
+      </div>
+      <div class="success" id="successView" aria-live="polite">
+        <div class="big">¡Nos vemos! 🎉</div>
+        <p>Tu asistencia quedó registrada. Trae tu pisto.</p>
+      </div>
+    </section>
+
+    <footer class="footer rise" style="animation-delay:1s">
+      Santoyo Fest · 2026
+    </footer>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
+
+</body></html>
