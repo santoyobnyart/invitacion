@@ -289,53 +289,12 @@ function initHeroTilt() {
 initHeroTilt();
 
 /* ============================================================
-   GIROSCOPIO (móviles)
+   HERO BOUNCE — duración aleatoria por carga
    ============================================================ */
-function initGyroscope() {
-  const wrap = document.querySelector(".hero-tilt");
-  if (!wrap) return;
-
-  const isMobile = ("ontouchstart" in window && navigator.maxTouchPoints > 0) ||
-    /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
-  if (!isMobile) return;
-
-  function applyOrientation(e) {
-    if (e.gamma === null && e.beta === null) { useFallback(); return; }
-    const gamma = e.gamma ?? 0;
-    const beta  = e.beta  ?? 0;
-    const rx = Math.max(-15, Math.min(15, beta  * 0.3));
-    const ry = Math.max(-15, Math.min(15, gamma * 0.3));
-    const hue = 260 + ((gamma + 90) / 180) * 40;
-
-    wrap.style.setProperty("--rx",   rx + "deg");
-    wrap.style.setProperty("--ry",   ry + "deg");
-    wrap.style.setProperty("--glow", `hsl(${hue}, 70%, 60%)`);
-  }
-
-  function startListening() {
-    window.addEventListener("deviceorientation", applyOrientation, true);
-  }
-
-  function useFallback() {
-    wrap.classList.add("no-gyro");
-  }
-
-  if (typeof DeviceOrientationEvent !== "undefined" &&
-      typeof DeviceOrientationEvent.requestPermission === "function") {
-    /* iOS 13+: solicitar permiso en el primer toque */
-    wrap.addEventListener("pointerdown", function askOnce() {
-      DeviceOrientationEvent.requestPermission()
-        .then(state => { if (state === "granted") startListening(); else useFallback(); })
-        .catch(useFallback);
-    }, { once: true });
-  } else if (window.DeviceOrientationEvent) {
-    startListening();
-  } else {
-    useFallback();
-  }
+const heroImg = document.querySelector(".hero-img");
+if (heroImg) {
+  heroImg.style.setProperty("--duration", (4 + Math.random() * 2).toFixed(2) + "s");
 }
-
-initGyroscope();
 
 /* ============================================================
    FIN
