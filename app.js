@@ -165,12 +165,20 @@ if (formEl) {
 
     try {
       if (CONFIG.sheetEndpoint) {
-        await fetch(CONFIG.sheetEndpoint, {
+        console.log("Endpoint:", CONFIG.sheetEndpoint);
+        console.log("Payload:", payload);
+        const res = await fetch(CONFIG.sheetEndpoint, {
           method: "POST",
-          mode: "no-cors",
-          headers: { "Content-Type": "text/plain" },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
         });
+        console.log("Response status:", res.status);
+        try {
+          const data = await res.json();
+          console.log("Response data:", data);
+        } catch (jsonErr) {
+          console.warn("No se pudo leer JSON:", jsonErr.message);
+        }
       } else {
         /* Sin endpoint: simula un pequeño delay y muestra éxito */
         console.log("📋 RSVP registrado (sin endpoint):", payload);
@@ -183,7 +191,7 @@ if (formEl) {
         succEl.classList.add("show");
       }
     } catch (err) {
-      console.error(err);
+      console.error("Fetch error:", err);
       submitEl.disabled = false;
       submitEl.textContent = "Confirmar ✦";
       alert("Hubo un error al enviar. Intenta de nuevo.");
