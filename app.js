@@ -8,7 +8,7 @@ const CONFIG = {
   fecha:     new Date(2026, 10, 7, 14, 0, 0),  // año, mes(0-11), día, hora, min
   direccion: "https://maps.app.goo.gl/WZNTEoWX7Nggmu2W6",
   /* Cuando tengas el endpoint de Google Apps Script, pégalo aquí: */
-  sheetEndpoint: "",
+  sheetEndpoint: "https://script.google.com/macros/s/AKfycbwTTqXa_TAlqJDVNxxBSTwlmUUHOdpninZwmfnW_wcBSnqstcTEo9E3CFnfZkJVFFUb/exec",
 };
 
 /* ---- FECHA Y MAPA ---- */
@@ -167,7 +167,8 @@ if (formEl) {
       if (CONFIG.sheetEndpoint) {
         await fetch(CONFIG.sheetEndpoint, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          mode: "no-cors",
+          headers: { "Content-Type": "text/plain" },
           body: JSON.stringify(payload),
         });
       } else {
