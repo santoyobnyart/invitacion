@@ -25,8 +25,8 @@
     <!-- HERO: Foto + stickers alrededor -->
     <section class="hero rise" style="animation-delay:.1s" aria-label="Hero">
 
-      <!-- Stickers: muévelos libremente. Reemplaza cada src con tu PNG sin fondo. -->
-      <!-- Cada sticker tiene data-x y data-y como posición inicial (% relativo al hero) -->
+      <!--
+      Stickers arrastrables y hero-photo (código original preservado)
 
       <div class="sticker" id="s-balloon"
            data-x="12" data-y="4"
@@ -84,10 +84,15 @@
              onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'sticker-ph',textContent:'🎱'}))">
       </div>
 
-      <!-- Foto principal: reemplaza src con tu PNG sin fondo -->
       <div class="hero-photo">
         <img src="foto.png" alt="Santoyo"
              onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'photo-ph',textContent:'FOTO.PNG'}))">
+      </div>
+      -->
+
+      <div class="hero-tilt">
+        <img class="hero-img" src="HB_2.png" alt="Santoyo">
+        <div class="hero-shine" aria-hidden="true"></div>
       </div>
 
     </section>

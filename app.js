@@ -192,8 +192,9 @@ if (formEl) {
 }
 
 /* ============================================================
-   STICKERS ARRASTRABLES
+   STICKERS ARRASTRABLES — código original preservado
    ============================================================ */
+/*
 function initStickers() {
   const hero = document.querySelector(".hero");
   if (!hero) return;
@@ -202,7 +203,6 @@ function initStickers() {
   const heroRect  = hero.getBoundingClientRect();
 
   stickers.forEach(el => {
-    /* Posición inicial desde data-x / data-y (%) */
     const px = parseFloat(el.dataset.x ?? 0);
     const py = parseFloat(el.dataset.y ?? 0);
     el.style.left = px + "%";
@@ -210,7 +210,6 @@ function initStickers() {
 
     let startX, startY, startLeft, startTop, isDragging = false;
 
-    /* ---- POINTER EVENTS (mouse + touch unificado) ---- */
     el.addEventListener("pointerdown", onDown);
 
     function onDown(e) {
@@ -253,6 +252,41 @@ function initStickers() {
 }
 
 initStickers();
+*/
+
+/* ============================================================
+   HERO TILT — efectos 3D, destello y glow ambient
+   ============================================================ */
+function initHeroTilt() {
+  const wrap = document.querySelector(".hero-tilt");
+  if (!wrap) return;
+
+  wrap.addEventListener("pointermove", (e) => {
+    const rect = wrap.getBoundingClientRect();
+    const mx = (e.clientX - rect.left) / rect.width;
+    const my = (e.clientY - rect.top)  / rect.height;
+    const rx = (my - 0.5) * -24;
+    const ry = (mx - 0.5) *  24;
+    const hue = 260 + mx * 40;
+
+    wrap.classList.remove("leaving");
+    wrap.style.setProperty("--rx",   rx + "deg");
+    wrap.style.setProperty("--ry",   ry + "deg");
+    wrap.style.setProperty("--mx",   mx);
+    wrap.style.setProperty("--my",   my);
+    wrap.style.setProperty("--glow", `hsl(${hue}, 70%, 60%)`);
+  });
+
+  wrap.addEventListener("pointerleave", () => {
+    wrap.classList.add("leaving");
+    setTimeout(() => wrap.classList.remove("leaving"), 650);
+    wrap.style.setProperty("--rx",   "0deg");
+    wrap.style.setProperty("--ry",   "0deg");
+    wrap.style.setProperty("--glow", "hsl(280, 70%, 60%)");
+  });
+}
+
+initHeroTilt();
 
 /* ============================================================
    FIN

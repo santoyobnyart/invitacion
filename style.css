@@ -72,17 +72,18 @@ main {
 }
 
 /* ============================================================
-   HERO (foto + stickers)
+   HERO
    ============================================================ */
 .hero {
   position: relative;
-  width: min(420px, 92vw);
-  aspect-ratio: 1 / 1.05;
-  /* Permite que los stickers salgan del borde visual */
+  width: min(500px, 90vw);
   overflow: visible;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* Foto principal */
+/* Foto principal y stickers — código original preservado
 .hero-photo {
   position: absolute;
   inset: 0;
@@ -112,9 +113,6 @@ main {
   background: rgba(255,255,255,.02);
 }
 
-/* ============================================================
-   STICKERS (arrastrables)
-   ============================================================ */
 .sticker {
   position: absolute;
   z-index: 3;
@@ -122,7 +120,6 @@ main {
   user-select: none;
   touch-action: none;
   transition: filter .2s, transform .15s;
-  /* La posición inicial se aplica desde JS con data-x / data-y */
 }
 .sticker:hover { filter: brightness(1.15); transform: scale(1.07) rotate(-2deg); }
 .sticker.dragging {
@@ -132,7 +129,6 @@ main {
   filter: drop-shadow(0 12px 24px rgba(0,0,0,.55));
   transform: scale(1.1);
 }
-
 .sticker img {
   width: 100%;
   height: auto;
@@ -140,8 +136,6 @@ main {
   pointer-events: none;
   -webkit-user-drag: none;
 }
-
-/* Placeholder emoji cuando la imagen no carga */
 .sticker-ph {
   width: 100%;
   height: 100%;
@@ -154,10 +148,6 @@ main {
   border-radius: 12px;
   pointer-events: none;
 }
-
-/* Tamaño y posición de cada sticker (en %, relativo al .hero) */
-/* Estos values se completan desde JS con data-x / data-y */
-/* El width se define aquí */
 #s-balloon  { width: 60%; }
 #s-ball     { width: 20%; }
 #s-bottle1  { width: 17%; }
@@ -166,8 +156,6 @@ main {
 #s-glass    { width: 19%; }
 #s-cat      { width: 21%; }
 #s-pool     { width: 14%; }
-
-/* Animación idle suave (se pausa al arrastrar) */
 .sticker:not(.dragging) { animation: idle-float 5s ease-in-out infinite alternate; }
 #s-balloon:not(.dragging)  { animation-duration: 6s; animation-delay: 0s; }
 #s-ball:not(.dragging)     { animation-duration: 5s; animation-delay: -.8s; }
@@ -177,11 +165,51 @@ main {
 #s-glass:not(.dragging)    { animation-duration: 6s; animation-delay: -4s; }
 #s-cat:not(.dragging)      { animation-duration: 5s; animation-delay: -1.5s; }
 #s-pool:not(.dragging)     { animation-duration: 7s; animation-delay: -2.5s; }
-
 @keyframes idle-float {
   from { translate: 0 0px; }
   to   { translate: 0 -10px; }
 }
+*/
+
+/* ============================================================
+   HERO TILT — imagen HB_2.png con efectos 3D interactivos
+   ============================================================ */
+.hero-tilt {
+  position: relative;
+  display: inline-block;
+  transform-style: preserve-3d;
+  transform: perspective(800px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform .1s ease-out, filter .3s ease-out;
+  filter: drop-shadow(0 24px 48px rgba(0,0,0,.7))
+          drop-shadow(0 0 50px var(--glow, var(--a)));
+  will-change: transform, filter;
+}
+.hero-tilt.leaving {
+  transition: transform .6s ease-out, filter .6s ease-out;
+}
+
+.hero-img {
+  max-width: min(500px, 90vw);
+  height: auto;
+  display: block;
+  pointer-events: none;
+}
+
+.hero-shine {
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  background: radial-gradient(
+    circle 180px at calc(var(--mx, .5) * 100%) calc(var(--my, .5) * 100%),
+    rgba(255,255,255,.15),
+    transparent 70%
+  );
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .3s ease-out;
+}
+.hero-tilt:hover .hero-shine { opacity: 1; }
+.hero-tilt.leaving .hero-shine { opacity: 0; transition: opacity .6s ease-out; }
 
 /* ============================================================
    TÍTULO
