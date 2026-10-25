@@ -481,3 +481,39 @@ h1 {
   .cta { padding: 14px 28px; }
   .rsvp { padding: 22px 18px; }
 }
+
+/* ============================================================
+   MOBILE: SHIMMER + GIROSCOPIO FALLBACK
+   ============================================================ */
+.hero-shimmer { display: none; }
+
+@media (max-width: 768px) {
+  .hero-img {
+    perspective: 800px;
+  }
+  .hero-shimmer {
+    display: block;
+    position: absolute;
+    inset: 0;
+    border-radius: 16px;
+    background: linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%);
+    background-size: 200% 200%;
+    animation: shimmer-mobile 4s linear infinite;
+    pointer-events: none;
+    opacity: 0.3;
+  }
+}
+
+@keyframes shimmer-mobile {
+  0%   { background-position: -200% -200%; }
+  100% { background-position:  200%  200%; }
+}
+
+/* Pulse fallback cuando no hay giroscopio */
+@keyframes hero-pulse {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.04); }
+}
+.hero-tilt.no-gyro .hero-img {
+  animation: hero-pulse 3s ease-in-out infinite;
+}
