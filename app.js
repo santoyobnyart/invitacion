@@ -167,18 +167,11 @@ if (formEl) {
       if (CONFIG.sheetEndpoint) {
         console.log("Endpoint:", CONFIG.sheetEndpoint);
         console.log("Payload:", payload);
-        const res = await fetch(CONFIG.sheetEndpoint, {
+        await fetch(CONFIG.sheetEndpoint, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          mode: "no-cors",
           body: JSON.stringify(payload),
         });
-        console.log("Response status:", res.status);
-        try {
-          const data = await res.json();
-          console.log("Response data:", data);
-        } catch (jsonErr) {
-          console.warn("No se pudo leer JSON:", jsonErr.message);
-        }
       } else {
         /* Sin endpoint: simula un pequeño delay y muestra éxito */
         console.log("📋 RSVP registrado (sin endpoint):", payload);
