@@ -8,7 +8,7 @@ const CONFIG = {
   fecha:     new Date(2026, 10, 7, 14, 0, 0),  // año, mes(0-11), día, hora, min
   direccion: "https://maps.app.goo.gl/WZNTEoWX7Nggmu2W6",
   /* Cuando tengas el endpoint de Google Apps Script, pégalo aquí: */
-  sheetEndpoint: "https://script.google.com/macros/s/AKfycbwTTqXa_TAlqJDVNxxBSTwlmUUHOdpninZwmfnW_wcBSnqstcTEo9E3CFnfZkJVFFUb/exec",
+  sheetEndpoint: "https://script.google.com/macros/s/AKfycbySzwJYuKfQMbJJttSszNPdfGj5PEVxw84drt-JCyszTsNccmHaEAQlkZUB_TdSWDFX/exec",
 };
 
 /* ---- FECHA Y MAPA ---- */
