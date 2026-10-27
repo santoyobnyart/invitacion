@@ -316,6 +316,55 @@ h1 {
 }
 
 /* ============================================================
+   SPOTIFY CARD
+   ============================================================ */
+.spotify-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: min(420px, 100%);
+  background: rgba(12, 12, 18, 0.7);
+  border: 1px solid var(--line);
+  border-left: 3px solid #1DB954;
+  border-radius: 18px;
+  padding: 14px 18px;
+  text-decoration: none;
+  backdrop-filter: blur(14px);
+  transition: transform .2s, border-color .2s, background .2s;
+}
+.spotify-card:hover {
+  transform: translateY(-2px);
+  background: rgba(29, 185, 84, .08);
+  border-color: #1DB954;
+}
+
+.spotify-icon {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}
+
+.spotify-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.spotify-kicker {
+  font: 500 .68rem 'JetBrains Mono', monospace;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.spotify-title {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--fg);
+}
+
+/* ============================================================
    CTA
    ============================================================ */
 .cta {

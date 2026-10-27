@@ -9,6 +9,7 @@ const CONFIG = {
   direccion: "https://maps.app.goo.gl/WZNTEoWX7Nggmu2W6",
   /* Cuando tengas el endpoint de Google Apps Script, pégalo aquí: */
   sheetEndpoint: "https://script.google.com/macros/s/AKfycbySzwJYuKfQMbJJttSszNPdfGj5PEVxw84drt-JCyszTsNccmHaEAQlkZUB_TdSWDFX/exec",
+  token: "santoyo2026fest",
 };
 
 /* ---- FECHA Y MAPA ---- */
@@ -170,7 +171,7 @@ if (formEl) {
         await fetch(CONFIG.sheetEndpoint, {
           method: "POST",
           mode: "no-cors",
-          body: JSON.stringify(payload),
+          body: JSON.stringify({ ...payload, token: CONFIG.token }),
         });
       } else {
         /* Sin endpoint: simula un pequeño delay y muestra éxito */
